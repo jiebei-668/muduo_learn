@@ -5,11 +5,16 @@
 #include <unordered_map>
 #include "Eventloop.h"
 #include "stdio.h"
+#define THREAD_NUMS 5
 // 注：使用方法 指定四个回调（对应TcpConnection中四个）后 调用init()
 class TcpServer
 {
 private:
+	// acceptor的loop
 	Eventloop *m_loop;
+	// 通信子线程的loop
+	Eventloop *m_loops[THREAD_NUMS];
+	int next_loop = 0;
 	std::unique_ptr<Acceptor> m_acceptor;
 	// 用地址作为key，也用地址作为value
 	std::unordered_map<TcpConnection *, TcpConnection *> m_connectionMap;
@@ -22,8 +27,19 @@ private:
 	std::function<void(TcpConnection *)> m_errorCallback;
 
 public:
-	TcpServer(Eventloop *loop, const char *ip, const int port);
+	TcpServer(Eventloop *loop, Eventloop *loops[], const char *ip, const int port);
 	~TcpServer();
+	// 获取通信子线程的loop，没有就返回m_loop
+	Eventloop *getLoop()
+	{
+		if(THREAD_NUMS == 0)
+		{
+			return m_loop;
+		}
+		int tmp = next_loop;
+		next_loop = (next_loop +1) % THREAD_NUMS;	
+		return m_loops[tmp];
+	}
 	void setConnectionCallback(std::function<void(int)> cb)
 	{
 		m_connectionCallback = cb;

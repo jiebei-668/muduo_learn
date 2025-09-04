@@ -1,11 +1,16 @@
 #include "TcpServer.h"
 #include "Acceptor.h"
+#include "Eventloop.h"
 #include "TcpConnection.h"
 #include <cassert>
-TcpServer::TcpServer(Eventloop *loop, const char *ip, const int port)
+TcpServer::TcpServer(Eventloop *loop, Eventloop *loops[], const char *ip, const int port)
 	: m_loop(loop)
 	, m_acceptor(nullptr)
 {
+	for(int ii = 0; ii < THREAD_NUMS; ii++)
+	{
+		m_loops[ii] = loops[ii];
+	}
 
 	m_acceptor.reset(new Acceptor(loop, ip, port));
 	m_acceptor->setNewConnectionCallback(std::bind(&TcpServer::newConnection, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
@@ -32,7 +37,7 @@ void TcpServer::newConnection(int fd, struct sockaddr *client, socklen_t *len)
 	assert(m_connectionCallback != nullptr);
 //	m_connectionCallback(fd);
 	printf("Acceptor::newConenctionCb===========\n");
-	TcpConnection *tcpConnection = new TcpConnection(m_loop, fd);
+	TcpConnection *tcpConnection = new TcpConnection(getLoop(), fd);
 	m_connectionMap[tcpConnection] = tcpConnection;
 
 	tcpConnection->setConnectionCallback(m_connectionCallback);
