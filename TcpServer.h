@@ -42,7 +42,7 @@ public:
 	}
 	void handleTcpConnectionClose(TcpConnection *p);
 	// 该函数传递给Acceptor使用
-	// 函数内负责初始化新的TcpConnection对象，设置其四个回调并启动TcpConnection
+	// 函数内负责初始化新的TcpConnection对象，执行Acceptor的newconnection回调，设置其四个回调并启动TcpConnection
 	void newConnection(int fd, struct sockaddr *client, socklen_t *len);
 	// 该函数主要用于启动Acceptor
 	// 注意由于Acceptor的实现特点，init调用需要在设置好四个回调m_connectionMap, m_messageCallback, m_closeCallback, m_errorCallback后
