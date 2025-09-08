@@ -1,9 +1,4 @@
-#include <pthread.h>
-#include <functional>
-#include <iostream>
 #include "CThread.h"
-#include <unistd.h>
-#include <cassert>
 
 
 
