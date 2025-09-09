@@ -13,9 +13,10 @@ private:
 	pthread_t m_pid;
 	using threadFunc_t = void *(*)(void *);
 	threadFunc_t m_func;
+	void *m_arg = nullptr;
 	bool m_ifDetach = false;
 public:
-	CThread(threadFunc_t func, bool ifDetach = false );
+	CThread(threadFunc_t func, void *arg, bool ifDetach = false );
 	void start();
 
 };

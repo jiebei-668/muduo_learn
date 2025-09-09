@@ -16,11 +16,12 @@ void *testfunc(void *p)
 		sleep(1);
 		
 	}
+	return nullptr;
 
 }
 int main()
 {
-	CThread t1(testfunc, true);	
+	CThread t1(testfunc, nullptr, true);	
 	t1.start();
 	sleep(10);
 	printf("main exit...\n");

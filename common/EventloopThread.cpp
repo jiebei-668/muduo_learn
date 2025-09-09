@@ -2,11 +2,12 @@
 
 
 
-EventloopThread::EventloopThread(void *(*func)(void *), bool ifDetach)
+EventloopThread::EventloopThread(std::function<void(void)> func, bool ifDetach)
 	: m_loop(new Eventloop)
-	, m_thread(new CThread(func, ifDetach))
+	, m_func(func)
+	, m_thread(new CThread(threadFunc, this, ifDetach))
 {
-
+	
 
 }
 Eventloop *EventloopThread::startLoop()
