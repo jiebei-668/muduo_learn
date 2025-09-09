@@ -14,4 +14,8 @@ Eventloop *EventloopThread::startLoop()
 	m_thread->start();
 	return m_loop.get();
 }
+Eventloop *EventloopThread::getLoop()
+{
+	return m_loop.get();
+}
 

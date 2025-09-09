@@ -18,5 +18,6 @@ public:
 	EventloopThread(void *(*func)(void *), bool ifDetach = false );
 	// 调用m_thread的start并返回Eventloop *
 	Eventloop *startLoop();
+	Eventloop *getLoop();
 
 };
