@@ -2,18 +2,18 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void *testfunc(void *a)
+void testfunc()
 {
-	for(int ii: {0, 1, 2, 3, 4})
+	for(int ii = 0; ii < 5; ii++)
 	{
-		printf("%ld    aaaaaaaaaaaaaaaaaaaaaa\n", pthread_self());
+		printf("%ld thread\n", pthread_self());
 		sleep(1);
 	}
-	return nullptr;
+	return;
 }
 int main(int argc, char* argv[])
 {
-	EventloopThreadPool pl(5, testfunc, true);
+	EventloopThreadPool pl(5, std::bind(testfunc), true);
 	for(int ii = 0; ii < 14; ii++)
 	{
 		printf("%p\n", pl.getLoop());

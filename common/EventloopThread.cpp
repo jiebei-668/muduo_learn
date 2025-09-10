@@ -7,7 +7,7 @@ EventloopThread::EventloopThread(std::function<void(void)> func, bool ifDetach)
 	, m_func(func)
 	, m_thread(new CThread(threadFunc, this, ifDetach))
 {
-	
+	printf("%p\n", this);	
 
 }
 Eventloop *EventloopThread::startLoop()

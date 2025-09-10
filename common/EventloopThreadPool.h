@@ -13,13 +13,16 @@
 class EventloopThreadPool
 {
 private:
+	// 这个线程数目，不包含主线程（acceptor线程),只包含通信线程，可以为0 
 	int m_threadNums;
-	std::vector<EventloopThread> m_threads;
+	std::vector<std::unique_ptr<EventloopThread>> m_threads;
 	int m_nextLoop = 0;
 public:
-	EventloopThreadPool(int threadNums, void *(*func)(void *), bool ifDetach = false );
+	// EventloopThreadPool(int threadNums, void *(*func)(void *), bool ifDetach = false );
+	EventloopThreadPool(int threadNums, std::function<void(void)> func, bool ifDetach = false );
+	// 获取一个loop指针，搜索方法是循环
 	Eventloop *getLoop();
+	// 开启所有线程的函数
 	void start();
-
 
 };
