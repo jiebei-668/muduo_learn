@@ -7,7 +7,7 @@ CThreadPool::CThreadPool(int num, void *(*func)(void *), bool ifDetach)
 {
 	for(int ii = 0; ii < num; ii++)
 	{
-		m_threads.push_back( CThread(func, ifDetach) );
+		m_threads.push_back( CThread(func, nullptr, ifDetach) );
 	}
 }
 void CThreadPool::start()

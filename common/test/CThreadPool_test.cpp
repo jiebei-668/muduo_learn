@@ -14,8 +14,9 @@ void *testfunc(void *p)
 	{
 		printf("%ld  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n", pthread_self());
 		sleep(1);
-		
+
 	}
+	return nullptr;
 
 }
 int main()
@@ -25,3 +26,4 @@ int main()
 	sleep(10);
 	printf("main exit...\n");
 }
+
