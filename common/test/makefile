@@ -10,4 +10,4 @@ EventloopThreadPool_test: ../CThread.cpp ../CThread.h ../EventloopThread.h ../Ev
 	g++ -g -o EventloopThreadPool_test ../CThread.cpp ../EventloopThread.cpp ../EventloopThreadPool.cpp EventloopThreadPool_test.cpp ../../Eventloop.cpp ../../Channel.cpp -I../ -I../../ -pthread
 
 clean:
-	rm -r CThread_test CThreadPool_test EventloopThread_test EventloopThreadPool_test
+	rm -rf CThread_test CThreadPool_test EventloopThread_test EventloopThreadPool_test

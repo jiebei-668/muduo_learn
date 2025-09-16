@@ -16,15 +16,14 @@ private:
 	std::unique_ptr<CThread> m_thread;
 	std::function<void(void)> m_func;
 public:
-	EventloopThread(std::function<void(void)> func, bool ifDetach = false );
+	EventloopThread(bool ifDetach = false );
 	// 调用m_thread的start并返回Eventloop *
 	Eventloop *startLoop();
 	Eventloop *getLoop();
 	static void *threadFunc(void *arg)
 	{
 		EventloopThread *thread = static_cast<EventloopThread *>(arg);
-		assert(thread->m_func != nullptr);
-		thread->m_func();
+		thread->m_loop->loop();
 		return nullptr;
 	}
 

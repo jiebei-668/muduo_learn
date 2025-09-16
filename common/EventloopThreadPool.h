@@ -19,7 +19,7 @@ private:
 	int m_nextLoop = 0;
 public:
 	// EventloopThreadPool(int threadNums, void *(*func)(void *), bool ifDetach = false );
-	EventloopThreadPool(int threadNums, std::function<void(void)> func, bool ifDetach = false );
+	EventloopThreadPool(int threadNums,  bool ifDetach = false );
 	// 获取一个loop指针，搜索方法是循环
 	Eventloop *getLoop();
 	// 开启所有线程的函数

@@ -3,13 +3,13 @@
 
 
 
-EventloopThreadPool::EventloopThreadPool(int threadNums, std::function<void(void)> func, bool ifDetach)
+EventloopThreadPool::EventloopThreadPool(int threadNums,  bool ifDetach)
 {
 	assert(threadNums >= 0);
 	m_threadNums = threadNums;
 	for(int ii = 0; ii < threadNums; ii++)
 	{
-		m_threads.emplace_back(new EventloopThread(func, ifDetach));
+		m_threads.emplace_back(new EventloopThread( ifDetach));
 	}
 }
 Eventloop *EventloopThreadPool::getLoop()
