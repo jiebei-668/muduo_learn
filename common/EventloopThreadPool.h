@@ -1,3 +1,4 @@
+// 使用EventloopThread实现的线程池
 #pragma once
 #include <pthread.h>
 #include <functional>
@@ -13,7 +14,7 @@
 class EventloopThreadPool
 {
 private:
-	// 这个线程数目，不包含主线程（acceptor线程),只包含通信线程，可以为0 
+	// 这个线程数目，不包含主线程（acceptor线程),只包含通信线程，可以为0，为0时主线程也是唯一的通信线程
 	int m_threadNums;
 	std::vector<std::unique_ptr<EventloopThread>> m_threads;
 	int m_nextLoop = 0;
@@ -22,7 +23,7 @@ public:
 	EventloopThreadPool(int threadNums,  bool ifDetach = false );
 	// 获取一个loop指针，搜索方法是循环
 	Eventloop *getLoop();
-	// 开启所有线程的函数
+	// 开启所有线程的函数，即所有线程开始运行loop
 	void start();
 
 };

@@ -1,3 +1,7 @@
+// 封装的使用Eventloop::loop()作为线程函数的线程类，并为直接封装pthread，而是使用已经过封装的CThread类
+// 线程函数是Eventloop::loop(), 使用c++11 function类型 std::function<void(void)>
+// 初始化参数只有一个 是否分离，默认分离
+// 使用 Eventloop *startLoop() 开启线程函数，并返回m_loop成员
 #pragma once
 #include <pthread.h>
 #include <functional>

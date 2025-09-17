@@ -1,3 +1,7 @@
+// 封装pthread的CThread
+// 使用类型 void *(*)(void *) 作为线程函数的类型
+// 初始化需要指定线程函数，线程函数参数和是否分离（默认分离）
+// 使用 start() 方法启动，即启动 pthread_create
 #pragma once
 #include <pthread.h>
 #include <functional>
