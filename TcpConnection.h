@@ -1,8 +1,8 @@
-#ifndef __TCPCONNECTION__H__
-#define __TCPCONNECTION__H__
+#pragma once
 #include <functional>
 #include <memory>
 #include "Channel.h"
+#include "Eventloop.h"
 #include "stdio.h"
 // connector 和对端进行通信，处理四个事情，刚连接时的处理，接收到消息时的处理，错误的处理以及当对端关闭时的处理
 // 注：使用方法 指定四个回调m_ConnectionCallback, m_MessageCallback, m_closeCallback, m_errorCallback后再调用init
@@ -53,4 +53,3 @@ public:
 	void init();
 	int getFd(){return m_channel.getFd();}
 };
-#endif

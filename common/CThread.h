@@ -22,5 +22,6 @@ private:
 public:
 	CThread(threadFunc_t func, void *arg, bool ifDetach = false );
 	void start();
+	pthread_t getPid();
 
 };

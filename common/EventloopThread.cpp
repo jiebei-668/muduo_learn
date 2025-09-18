@@ -11,6 +11,8 @@ EventloopThread::EventloopThread(bool ifDetach)
 Eventloop *EventloopThread::startLoop()
 {
 	m_thread->start();
+	m_loop->setPid(m_thread->getPid());
+	// m_pid = m_thread->getPid();
 	return m_loop.get();
 }
 Eventloop *EventloopThread::getLoop()

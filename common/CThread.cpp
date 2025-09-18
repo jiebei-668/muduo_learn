@@ -24,3 +24,7 @@ void CThread::start()
 	pthread_create(&m_pid, &attr, m_func, m_arg);
 }
 
+pthread_t CThread::getPid()
+{
+	return m_pid;
+}

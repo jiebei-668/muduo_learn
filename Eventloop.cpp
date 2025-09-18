@@ -47,14 +47,26 @@ void Eventloop::loop()
 				printf("Eventloop addr=%p 被唤醒\n", this);
 				char tmp[8];
 				read(m_eventFd, tmp, 8); 
+				m_eventNums--;
 				continue;
 			}
 			m_fdToChannel[ii]->setRevents(m_fds[ii].revents);
 			m_activeChannels.push_back(m_fdToChannel[ii]);
+			m_eventNums--;
 		}
 		for(auto &one: m_activeChannels)
 		{
 			one->handleEvent();
+		}
+
+
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+			for(auto &one: m_pendingFunctors)
+			{
+				one();
+			}
+			m_pendingFunctors.clear();
 		}
 	}
 }
@@ -62,4 +74,28 @@ void Eventloop::wakeUp()
 {
 	char tmp[8];
 	write(m_eventFd, tmp, 8);
+}
+bool Eventloop::isInLoopThread()
+{
+	return pthread_self() == m_pid;
+}
+void Eventloop::runInLoop(std::function<void(void)> cb)
+{
+	if(isInLoopThread())
+	{
+		printf("those is ...\n");
+
+		cb();
+	}
+	else
+	{
+		printf("that is test one point...\n");	
+		std::unique_lock<std::mutex> lock(m_mutex);
+		m_pendingFunctors.push_back(cb);
+		wakeUp();
+	}
+}
+void Eventloop::setPid(pthread_t pid)
+{
+	m_pid = pid;
 }
