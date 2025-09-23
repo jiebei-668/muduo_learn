@@ -1,10 +1,12 @@
-#ifndef __TCPSERVER__H__
-#define __TCPSERVER__H__
+#pragma once
 #include "Acceptor.h"
 #include "TcpConnection.h"
 #include <unordered_map>
 #include "Eventloop.h"
 #include "stdio.h"
+#include "CThread.h"
+#include "CThreadPool.h"
+#include "EventloopThreadPool.h"
 #define THREAD_NUMS 5
 // 注：使用方法 指定四个回调（对应TcpConnection中四个）后 调用init()
 class TcpServer
@@ -13,7 +15,8 @@ private:
 	// acceptor的loop
 	Eventloop *m_loop;
 	// 通信子线程的loop
-	Eventloop *m_loops[THREAD_NUMS];
+	// Eventloop *m_loops[THREAD_NUMS];
+	std::unique_ptr<EventloopThreadPool> m_pool;
 	int next_loop = 0;
 	std::unique_ptr<Acceptor> m_acceptor;
 	// 用地址作为key，也用地址作为value
@@ -27,7 +30,7 @@ private:
 	std::function<void(TcpConnection *)> m_errorCallback;
 
 public:
-	TcpServer(Eventloop *loop, Eventloop *loops[], const char *ip, const int port);
+	TcpServer(Eventloop *loop, const char *ip, const int port);
 	~TcpServer();
 	// 获取通信子线程的loop，没有就返回m_loop
 	Eventloop *getLoop()
@@ -36,9 +39,7 @@ public:
 		{
 			return m_loop;
 		}
-		int tmp = next_loop;
-		next_loop = (next_loop +1) % THREAD_NUMS;	
-		return m_loops[tmp];
+		return m_pool->getLoop();
 	}
 	void setConnectionCallback(std::function<void(int)> cb)
 	{
@@ -64,4 +65,3 @@ public:
 	// 注意由于Acceptor的实现特点，init调用需要在设置好四个回调m_connectionMap, m_messageCallback, m_closeCallback, m_errorCallback后
 	void init();
 };
-#endif
